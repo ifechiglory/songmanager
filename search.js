@@ -18,6 +18,11 @@ function searchSongs() {
   const resultsContainer = document.getElementById("resultsContainer");
   resultsContainer.innerHTML = ""; // Clear previous results
 
+  if (gospelSongsDB.length === 0) {
+    resultsContainer.innerHTML = "<p>There are no songs currently in the database.</p>";
+    return;
+  }
+
   if (query === "") {
     return; // Do not show results if the input is empty
   }
@@ -43,7 +48,7 @@ function searchSongs() {
                 `;
       resultsContainer.appendChild(resultItem);
     });
-  } else {
+  }else {
     resultsContainer.innerHTML = "<p>No songs found matching your search.</p>";
   }
 }
