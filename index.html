@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Songs Manager</h1>
+
+  <form id="songForm">
+    <label for="songTitle">Title</label>
+    <input type="text" id="songTitle" placeholder="Enter Song Title" required>
+
+    <label for="songArtist">Artist (Optional)</label>
+    <input type="text" id="songArtist" placeholder="Enter Artist Name">
+
+    <label for="songLyrics">Lyrics</label>
+    <textarea id="songLyrics" rows="5" placeholder="Enter Lyrics" required></textarea>
+
+    <button type="submit">Add Song</button>
+  </form>
+
+  <div class="songs-list" id="songsList">
+    <h2>Song List</h2>
+  </div>
+
+  <!-- Modal for song editting -->
+   <div class="modal" id="editModal">
+    <div class="modal-content">
+        <h3>Edit Song</h3>
+        <form id="editForm">
+            <label for="editTitle">Title</label>
+            <input type="text" id="editTitle" required>
+
+            <label for="editArtist">Artist (optional)</label>
+            <input type="text" id="editArtist">
+
+            <label for="editLyrics">Lyrics</label>
+           <textarea id="editLyrics" rows="5" required></textarea>
+
+           <div class="modal-actions">
+            <button type="button" onclick="saveChanges()">Save</button>
+            <button type="button" onclick="closeModal()">Cancel</button>
+           </div>
+        </form>
+    </div>
+   </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

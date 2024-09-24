@@ -1,0 +1,114 @@
+body {
+  margin: 20px;
+  padding: 0;
+  background-color: #f0f3f4;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 60%;
+  margin: auto auto 20px auto;
+}
+
+label {
+  margin: 0 0 5px 20px;
+  color: #2c3e50;
+}
+
+Input[type="text"],
+textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 80%;
+  margin: auto auto 10px auto;
+}
+
+button {
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 30%;
+  margin: auto;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.songs-list {
+  background-color: #fff;
+  padding: 15px;
+  width: 60%;
+  margin: auto;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.song-item {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.song-item:last-child {
+  border-bottom: none;
+}
+
+.song-actions button {
+  background-color: #2ecc71;
+  margin: 10px 5px 0 0;
+}
+
+.song-actions button:last-child {
+  background-color: #e74c3c;
+}
+
+.lyrics {
+  display: none;
+  margin-top: 5px;
+  white-space: pre-wrap;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 600px;
+}
+
+.modal-content button {
+  margin-top: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
