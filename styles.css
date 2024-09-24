@@ -183,6 +183,21 @@ h1.search{
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  margin-top: 20px;
+}
+
+.modal-body pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 .close {
   color: #aaa;
   float: right;

@@ -32,7 +32,7 @@ function renderSongs(songs) {
             <p><strong>Artist:</strong> ${
               song.artist ? song.artist : "Unknown"
             }</p>
-            <button onclick="toggleLyrics(${index})" id="toggleBtn${index}">View Lyrics</button>
+            <button onclick="viewLyrics(${index})" id="toggleBtn${index}">View Lyrics</button>
             <p class="lyrics" id="lyrics${index}">${song.lyrics}</p>
             <div class="song-actions">
             <button onclick="openEditModal(${index})">Edit</button>
@@ -43,17 +43,18 @@ function renderSongs(songs) {
   });
 }
 
-function toggleLyrics(index) {
-  const lyricsDiv = document.getElementById(`lyrics${index}`);
-  const toggleButton = document.getElementById(`toggleBtn${index}`);
+ // View Lyrics Modal
+ function viewLyrics(index) {
+  const lyricsModal = document.getElementById("lyricsModal");
+  const lyricsContent = document.getElementById("lyricsContent");
 
-  if (lyricsDiv.style.display === "none") {
-    lyricsDiv.style.display = "block";
-    toggleButton.textContent = "Hide Lyrics";
-  } else {
-    lyricsDiv.style.display = "none";
-    toggleButton.textContent = "View Lyrics";
-  }
+  lyricsContent.textContent = gospelSongsDB[index].lyrics;
+  lyricsModal.style.display = "flex"; // Show the modal
+}
+
+function closeLyricsModal() {
+  const lyricsModal = document.getElementById("lyricsModal");
+  lyricsModal.style.display = "none"; // Hide the modal
 }
 
 function formatLyrics(lyrics) {

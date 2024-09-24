@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    
     <div class="heading">
       <h1>Songs Manager</h1>
       <a href="search.html" class="home-link">Search Songs</a>
@@ -55,6 +54,19 @@
             <button type="button" onclick="closeModal()">Cancel</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Modal for viewing songs -->
+    <div id="lyricsModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Lyrics</h3>
+          <span class="close" onclick="closeLyricsModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <pre id="lyricsContent"></pre>
+        </div>
       </div>
     </div>
 
