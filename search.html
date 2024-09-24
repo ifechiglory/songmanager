@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Gospel Songs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.9.0/localforage.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="heading">
+       <h1>Search Songs</h1> 
+       <a href="index.html" class="home-link">Home</a> 
+    </div>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search for songs..." oninput="searchSongs()">
+</div>
+
+<div class="results" id="searchResults">
+    <h2>Search Results</h2>
+    <div id="resultsContainer"></div>
+</div>
+
+<div id="songsList"></div>
+
+<script src="search.js"></script>
+</body>
+</html>
