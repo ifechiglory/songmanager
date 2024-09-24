@@ -120,6 +120,7 @@ function saveEdit() {
       .then(() => {
         renderSongs(gospelSongsDB);
         closeModal(); // Close the modal after saving
+        alert('Song saved successfully');
       })
       .catch(function (err) {
         console.error("Error saving data to localForage:", err);

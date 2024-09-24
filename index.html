@@ -40,16 +40,21 @@
       <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>Edit Song</h2>
-        <input type="text" id="editTitle" placeholder="Song Title" required />
-        <input type="text" id="editArtist" placeholder="Artist (Optional)" />
-        <textarea
-          id="editLyrics"
-          rows="5"
-          placeholder="Song Lyrics"
-          required
-        ></textarea>
-        <button onclick="saveEdit()">Save</button>
-        <button onclick="closeModal()">Cancel</button>
+        <form>
+          <input type="text" id="editTitle" placeholder="Song Title" required />
+          <input type="text" id="editArtist" placeholder="Artist (Optional)" />
+          <textarea
+            id="editLyrics"
+            rows="7"
+            placeholder="Song Lyrics"
+            required
+          ></textarea>
+
+          <div class="modal-actions">
+            <button type="button" onclick="saveEdit()">Save</button>
+            <button type="button" onclick="closeModal()">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
 
