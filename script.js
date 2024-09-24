@@ -17,7 +17,7 @@ localforage
 
 function renderSongs(songs) {
   const songsList = document.getElementById("songsList");
-  songsList.innerHTML = "<h2>Your Songs:</h2>";
+  songsList.innerHTML = "<h2>Song List</h2>";
 
   if (songs.length === 0) {
     songsList.innerHTML += "<p>No songs added yet.</p>";
@@ -49,12 +49,12 @@ function renderSongs(songs) {
   const lyricsContent = document.getElementById("lyricsContent");
 
   lyricsContent.textContent = gospelSongsDB[index].lyrics;
-  lyricsModal.style.display = "flex"; // Show the modal
+  lyricsModal.style.display = "flex"; 
 }
 
 function closeLyricsModal() {
   const lyricsModal = document.getElementById("lyricsModal");
-  lyricsModal.style.display = "none"; // Hide the modal
+  lyricsModal.style.display = "none";
 }
 
 function formatLyrics(lyrics) {
