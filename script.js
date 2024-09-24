@@ -1,133 +1,145 @@
-// This JS script creates a song database that also utilizes localStorage to persist data. 
-// User can add a new song, modify an already existing song, delete a song and view songs already on the db
+// This JS script creates a song database that also utilizes localFtorage to persist data.
+// User can add a new song, modify an already existing song, delete a song, view songs already on the db and search for songs using the search function
 
- // Gospel Songs Database (will load from localStorage if available)
- let gospelSongsDB = JSON.parse(localStorage.getItem("gospelSongsDB")) || [];
- let editIndex = null; // For tracking the index of the song being edited
+let gospelSongsDB = [];
+let currentEditIndex = null;
 
- // Function to format lyrics with double line spacing
- function formatLyrics(lyrics) {
-   return lyrics.split('\n').join('\n\n'); // Adds two line spacings between lyrics
- }
+// Load songs from LocalForage on page load
+localforage
+  .getItem("gospelSongsDB")
+  .then(function (songs) {
+    gospelSongsDB = songs || [];
+    renderSongs(gospelSongsDB);
+  })
+  .catch(function (err) {
+    console.error(err);
+  });
 
- // Function to render the songs list
- function renderSongs() {
-   const songsList = document.getElementById("songsList");
-   songsList.innerHTML = "<h2>Song List</h2>";
+function renderSongs(songs) {
+  const songsList = document.getElementById("songsList");
+  songsList.innerHTML = "<h2>Your Songs:</h2>";
 
-   if (gospelSongsDB.length === 0) {
-     songsList.innerHTML += "<p>No songs available.</p>";
-     return;
-   }
+  if (songs.length === 0) {
+    songsList.innerHTML += "<p>No songs added yet.</p>";
+    return;
+  }
 
-   gospelSongsDB.forEach((song, index) => {
-     const songItem = document.createElement("div");
-     songItem.classList.add("song-item");
+  songs.forEach((song, index) => {
+    const songItem = document.createElement("div");
+    songItem.classList.add("song-item");
+    songItem.innerHTML = `
+            <p><strong>Title:</strong> ${song.title}</p>
+            <p><strong>Artist:</strong> ${
+              song.artist ? song.artist : "Unknown"
+            }</p>
+            <button onclick="toggleLyrics(${index})" id="toggleBtn${index}">View Lyrics</button>
+            <p class="lyrics" id="lyrics${index}">${song.lyrics}</p>
+            <div class="song-actions">
+            <button onclick="openEditModal(${index})">Edit</button>
+            <button onclick="deleteSong(${index})">Delete</button>
+            </div>
+        `;
+    songsList.appendChild(songItem);
+  });
+}
 
-     songItem.innerHTML = `
-       <p><strong>Title:</strong> ${song.title}</p>
-       <p><strong>Artist:</strong> ${song.artist ? song.artist : 'Unknown'}</p>
-       <button onclick="toggleLyrics(${index})" id="toggleBtn${index}">View Song</button>
-       <div class="lyrics" id="lyrics${index}">
-         <p><strong>Lyrics:</strong></p>
-         <pre>${song.lyrics}</pre>
-       </div>
-       <div class="song-actions">
-         <button onclick="openEditModal(${index})">Edit Song</button>
-         <button onclick="confirmDelete(${index})">Delete Song</button>
-       </div>
-     `;
-     songsList.appendChild(songItem);
-   });
- }
+function toggleLyrics(index) {
+  const lyricsDiv = document.getElementById(`lyrics${index}`);
+  const toggleButton = document.getElementById(`toggleBtn${index}`);
 
- // Function to toggle the visibility of the lyrics
- function toggleLyrics(index) {
-   const lyricsDiv = document.getElementById(`lyrics${index}`);
-   const toggleButton = document.getElementById(`toggleBtn${index}`);
+  if (lyricsDiv.style.display === "none") {
+    lyricsDiv.style.display = "block";
+    toggleButton.textContent = "Hide Lyrics";
+  } else {
+    lyricsDiv.style.display = "none";
+    toggleButton.textContent = "View Lyrics";
+  }
+}
 
-   if (lyricsDiv.style.display === "none") {
-     lyricsDiv.style.display = "block";
-     toggleButton.textContent = "Hide Song";
-   } else {
-     lyricsDiv.style.display = "none";
-     toggleButton.textContent = "View Song";
-   }
- }
+function formatLyrics(lyrics) {
+  return lyrics.split("\n").join("\n\n"); // Adds two line spacings between lyrics
+}
 
- // Function to save the updated songsDB to localStorage
- function saveToLocalStorage() {
-   localStorage.setItem("gospelSongsDB", JSON.stringify(gospelSongsDB));
- }
+function addSong(event) {
+  event.preventDefault(); // Prevent the default form submission
+  const title = document.getElementById("title").value.trim();
+  const artist = document.getElementById("artist").value.trim();
+  const lyrics = document.getElementById("lyrics").value.trim();
 
- // Function to add a new song
- document.getElementById("songForm").addEventListener("submit", function(event) {
-   event.preventDefault();
+  gospelSongsDB.push({
+    title: title,
+    artist: artist,
+    lyrics: formatLyrics(lyrics),
+  });
 
-   const title = document.getElementById("songTitle").value;
-   const artist = document.getElementById("songArtist").value;
-   const lyrics = document.getElementById("songLyrics").value;
+  localforage
+    .setItem("gospelSongsDB", gospelSongsDB)
+    .then(() => {
+      renderSongs(gospelSongsDB);
+      // Clear input fields
+      document.getElementById("title").value = "";
+      document.getElementById("artist").value = "";
+      document.getElementById("lyrics").value = "";
+    })
+    .catch(function (err) {
+      console.error("Error saving data to localForage:", err);
+    });
+  alert("Saved successfully");
+}
 
-   const existingSong = gospelSongsDB.find(song => song.title === title);
-   if (existingSong) {
-     alert("Song already exists. Try editing it instead.");
-     return;
-   }
+function openEditModal(index) {
+  currentEditIndex = index;
+  const song = gospelSongsDB[index];
+  document.getElementById("editTitle").value = song.title;
+  document.getElementById("editArtist").value = song.artist;
+  document.getElementById("editLyrics").value = song.lyrics.replace(
+    /\n\n/g,
+    "\n"
+  );
 
-   gospelSongsDB.push({
-     title: title,
-     artist: artist || null, // Set artist as 'null' if it's not provided
-     lyrics: formatLyrics(lyrics),
-   });
+  document.getElementById("editModal").style.display = "flex"; // Show modal
+}
 
-   document.getElementById("songForm").reset();
-   saveToLocalStorage(); // Save updated data to local storage
-   renderSongs();
- });
+function closeModal() {
+  document.getElementById("editModal").style.display = "none"; // Hide modal
+}
 
- // Function to open the edit modal
- function openEditModal(index) {
-   editIndex = index;
-   const song = gospelSongsDB[index];
-   document.getElementById("editTitle").value = song.title;
-   document.getElementById("editArtist").value = song.artist || '';
-   document.getElementById("editLyrics").value = song.lyrics.replace(/\n\n/g, '\n');
+function saveEdit() {
+  const title = document.getElementById("editTitle").value.trim();
+  const artist = document.getElementById("editArtist").value.trim();
+  const lyrics = document.getElementById("editLyrics").value.trim();
 
-   // Show the modal
-   document.getElementById("editModal").style.display = "flex";
- }
+  if (currentEditIndex !== null) {
+    gospelSongsDB[currentEditIndex] = {
+      title: title,
+      artist: artist,
+      lyrics: formatLyrics(lyrics),
+    };
+    localforage
+      .setItem("gospelSongsDB", gospelSongsDB)
+      .then(() => {
+        renderSongs(gospelSongsDB);
+        closeModal(); // Close the modal after saving
+      })
+      .catch(function (err) {
+        console.error("Error saving data to localForage:", err);
+      });
+  }
+}
 
- // Function to save the edited song
- function saveChanges() {
-   const title = document.getElementById("editTitle").value;
-   const artist = document.getElementById("editArtist").value;
-   const lyrics = document.getElementById("editLyrics").value;
+function deleteSong(index) {
+  if (confirm("This action cannot be undone. Do you wish to continue?")) {
+    gospelSongsDB.splice(index, 1);
+    localforage
+      .setItem("gospelSongsDB", gospelSongsDB)
+      .then(() => {
+        renderSongs(gospelSongsDB);
+      })
+      .catch(function (err) {
+        console.error("Error saving data to localForage:", err);
+      });
+  }
+}
 
-   gospelSongsDB[editIndex] = {
-     title: title,
-     artist: artist || null,
-     lyrics: formatLyrics(lyrics),
-   };
-
-   saveToLocalStorage(); // Save updated data to local storage
-   closeModal();
-   renderSongs();
- }
-
- // Function to close the edit modal
- function closeModal() {
-   document.getElementById("editModal").style.display = "none";
- }
-
- // Function to confirm deletion of a song
- function confirmDelete(index) {
-   const confirmDelete = window.confirm("This action cannot be undone. Continue?");
-   if (confirmDelete) {
-     gospelSongsDB.splice(index, 1);
-     saveToLocalStorage(); // Save updated data to local storage
-     renderSongs();
-   }
- }
-
- // Initialize the list on page load
- renderSongs();
+// Initialize the list on page load
+renderSongs(gospelSongsDB);
